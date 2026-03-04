@@ -25,7 +25,8 @@ max_depth=10
 n_estimators=10
 
 # Mentioning experiment name 
-mlflow.set_experiment('Experiment_2')
+mlflow.autolog()
+mlflow.set_experiment('Experiment_')
 with mlflow.start_run():
     rf=RandomForestClassifier(max_depth=max_depth,n_estimators=n_estimators,random_state=42)
     rf.fit(X_train,y_train)
@@ -33,10 +34,6 @@ with mlflow.start_run():
     y_pred=rf.predict(X_test)
     accuracy=accuracy_score(y_test,y_pred)
 
-    # Logging with MLFlow
-    mlflow.log_metric('Accuracy',accuracy)
-    mlflow.log_param('max_depth',max_depth)
-    mlflow.log_param('n_estimators',n_estimators)
 
     # print(accuracy)
 
@@ -52,14 +49,11 @@ with mlflow.start_run():
     plt.savefig("Confusion_Matrix.png")
 
     # Log Artifacts using mlflow
-    mlflow.log_artifact('Confusion_Matrix.png')
     mlflow.log_artifact(__file__)
 
     # save tags
     mlflow.set_tags({"Author":"Sanket","Project":"Wine Classifier"})
 
-    # Log the MOdel
-    mlflow.sklearn.log_model(rf,"Random_Forest_Model")
 
     print(accuracy)
 
